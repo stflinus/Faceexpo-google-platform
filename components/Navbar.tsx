@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Logo } from './Logo';
@@ -38,6 +37,9 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
                   + Upload
                 </Link>
              )}
+            <Link to="/settings" className="text-white font-bold text-sm hover:text-neon transition-colors hidden md:block">
+              Settings
+            </Link>
             <div className="relative group cursor-pointer" onClick={() => navigate(`/profile/${user.id}`)}>
               <img src={user.avatarUrl} alt="Profile" className="w-10 h-10 rounded-full border-2 border-neon" />
             </div>

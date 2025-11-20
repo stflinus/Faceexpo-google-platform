@@ -6,6 +6,7 @@ import { Feed } from './pages/Feed';
 import { Profile } from './pages/Profile';
 import { Upload } from './pages/Upload';
 import { Auth } from './pages/Auth';
+import { Settings } from './pages/Settings';
 import { User } from './types';
 
 const App: React.FC = () => {
@@ -13,6 +14,10 @@ const App: React.FC = () => {
 
   const handleLogin = (loggedInUser: User) => {
     setUser(loggedInUser);
+  };
+
+  const handleUserUpdate = (updatedUser: User) => {
+    setUser(updatedUser);
   };
 
   const handleLogout = () => {
@@ -32,6 +37,7 @@ const App: React.FC = () => {
           <Route path="/feed" element={user ? <Feed /> : <Navigate to="/auth" />} />
           <Route path="/profile/:id" element={user ? <Profile /> : <Navigate to="/auth" />} />
           <Route path="/upload" element={user ? <Upload user={user} /> : <Navigate to="/auth" />} />
+          <Route path="/settings" element={user ? <Settings user={user} onUpdateUser={handleUserUpdate} /> : <Navigate to="/auth" />} />
           
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

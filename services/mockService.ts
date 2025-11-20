@@ -113,6 +113,26 @@ export const MockService = {
       return MOCK_USERS.find(u => u.id === userId);
   },
 
+  updateUser: async (userId: string, updates: Partial<User>): Promise<User> => {
+    await new Promise(resolve => setTimeout(resolve, 800)); // Simulate latency
+    const index = MOCK_USERS.findIndex(u => u.id === userId);
+    if (index !== -1) {
+      const updatedUser = { ...MOCK_USERS[index], ...updates };
+      MOCK_USERS[index] = updatedUser;
+      
+      // Also update author info in posts if name/avatar changed
+      MOCK_POSTS.forEach(post => {
+          if (post.artistId === userId) {
+              if (updates.username) post.artistName = updates.username;
+              if (updates.avatarUrl) post.artistAvatar = updates.avatarUrl;
+          }
+      });
+      
+      return updatedUser;
+    }
+    throw new Error("User not found");
+  },
+
   createPost: async (post: Omit<Post, 'id' | 'createdAt' | 'comments' | 'fanCount'>, user: User): Promise<Post> => {
     await new Promise(resolve => setTimeout(resolve, 1000));
     const newPost: Post = {

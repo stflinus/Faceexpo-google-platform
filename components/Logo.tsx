@@ -15,15 +15,6 @@ export const Logo: React.FC<LogoProps> = ({ className = "h-10" }) => {
       aria-label="FaceExpo Logo"
       style={{ overflow: 'visible' }}
     >
-      <defs>
-        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-           <stop offset="0%" stopColor="#FFFFFF" />
-           <stop offset="45%" stopColor="#FFFFFF" />
-           <stop offset="45%" stopColor="#00FFAA" />
-           <stop offset="100%" stopColor="#00FFAA" />
-        </linearGradient>
-      </defs>
-      
       {/* Text Group */}
       <text 
         x="0" 
@@ -33,14 +24,18 @@ export const Logo: React.FC<LogoProps> = ({ className = "h-10" }) => {
         fontSize="60" 
         letterSpacing="-3"
       >
+        {/* "face" is white */}
         <tspan fill="white">face</tspan>
-        <tspan fill="#00FFAA">expo</tspan>
+        {/* "e" (second e) is white to form the pair of eyes "ee" */}
+        <tspan fill="white">e</tspan>
+        {/* "xpo" remains neon */}
+        <tspan fill="#00FFAA">xpo</tspan>
       </text>
 
-      {/* Smile Curve - Positioned under the "ee" junction (approx x=95 to x=135) */}
+      {/* Smile Curve - White, positioned under the "ee" junction to look like a face */}
       <path 
         d="M 92 58 Q 113 75 134 58" 
-        stroke="#00FFAA" 
+        stroke="white" 
         strokeWidth="4" 
         strokeLinecap="round"
       />

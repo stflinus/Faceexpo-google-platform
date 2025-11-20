@@ -64,7 +64,7 @@ export const Profile: React.FC = () => {
                     
                     <button 
                         onClick={handleBecomeFan}
-                        className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all duration-300 shadow-[0_0_15px_rgba(0,255,170,0.3)] ${isFanned ? 'bg-neon text-black' : 'bg-black text-neon border border-neon hover:bg-neon hover:text-black'}`}
+                        className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all duration-300 shadow-[0_0_15px_rgba(0,255,170,0.3)] hover:scale-110 ${isFanned ? 'bg-neon text-black' : 'bg-black text-neon border border-neon'}`}
                     >
                         <FoldingFan className="w-6 h-6" filled={isFanned} />
                         {isFanned ? 'Fanned' : 'Become a Fan'}

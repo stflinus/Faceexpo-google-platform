@@ -31,10 +31,11 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onBecomeFan }) => {
         
         <button 
           onClick={handleFanClick}
-          className={`transition-all duration-300 transform hover:scale-110 active:scale-95 p-2 rounded-full ${isFanned ? 'text-neon bg-neon/10' : 'text-gray-400 hover:text-neon hover:bg-white/5'}`}
+          className={`transition-all duration-300 transform p-2 rounded-full hover:scale-150 ${isFanned ? 'scale-110' : 'scale-100'}`}
           title="Become a Fan"
         >
-          <FoldingFan className="w-7 h-7" filled={isFanned} />
+          {/* Fan is always green, no opacity reduction */}
+          <FoldingFan className="w-10 h-10 drop-shadow-md" filled={isFanned} />
         </button>
       </div>
 

@@ -6,27 +6,58 @@ interface FoldingFanProps {
   filled?: boolean;
 }
 
-export const FoldingFan: React.FC<FoldingFanProps> = ({ className = "w-6 h-6", filled = false }) => {
+export const FoldingFan: React.FC<FoldingFanProps> = ({ className = "w-10 h-10", filled = false }) => {
   return (
     <svg 
-      viewBox="0 0 24 24" 
+      viewBox="0 0 100 100" 
       className={className} 
-      fill="none" 
       xmlns="http://www.w3.org/2000/svg"
+      aria-label="Fan"
+      style={{ overflow: 'visible' }}
     >
-      <path
-        d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12L12 12L22 12Z"
-        fill={filled ? "currentColor" : "none"}
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-      <path d="M12 12L12 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M12 12L19.0711 4.92893" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M12 12L4.92893 4.92893" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M12 12L21.23 8.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M12 12L2.77 8.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      <circle cx="12" cy="12" r="2" fill="currentColor" />
+      <defs>
+        <filter id="neon-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+      
+      <g transform="translate(50, 90)" filter={filled ? "url(#neon-glow)" : ""}>
+        {/* Fan Segments - Alternating colors for 3D pleated effect */}
+        
+        {/* Left Side Segments */}
+        <path d="M0 0 L-70 -20 L-65 -35 L0 0" fill="#00CC88" stroke="none" />
+        <path d="M0 0 L-65 -35 L-55 -48 L0 0" fill="#00FFAA" stroke="none" />
+        
+        <path d="M0 0 L-55 -48 L-42 -60 L0 0" fill="#00CC88" stroke="none" />
+        <path d="M0 0 L-42 -60 L-25 -70 L0 0" fill="#00FFAA" stroke="none" />
+        
+        <path d="M0 0 L-25 -70 L-10 -75 L0 0" fill="#00CC88" stroke="none" />
+        
+        {/* Center/Right Side Segments */}
+        <path d="M0 0 L-10 -75 L10 -75 L0 0" fill="#00FFAA" stroke="none" />
+        
+        <path d="M0 0 L10 -75 L25 -70 L0 0" fill="#00CC88" stroke="none" />
+        <path d="M0 0 L25 -70 L42 -60 L0 0" fill="#00FFAA" stroke="none" />
+        
+        <path d="M0 0 L42 -60 L55 -48 L0 0" fill="#00CC88" stroke="none" />
+        <path d="M0 0 L55 -48 L65 -35 L0 0" fill="#00FFAA" stroke="none" />
+        
+        <path d="M0 0 L65 -35 L70 -20 L0 0" fill="#00CC88" stroke="none" />
+
+        {/* Outer Rim Line for definition */}
+        <path 
+            d="M-70 -20 L-65 -35 L-55 -48 L-42 -60 L-25 -70 L-10 -75 L10 -75 L25 -70 L42 -60 L55 -48 L65 -35 L70 -20" 
+            fill="none" 
+            stroke="#FFFFFF" 
+            strokeWidth="1" 
+            opacity="0.6"
+        />
+
+        {/* Handle */}
+        <circle cx="0" cy="0" r="6" fill="white" />
+        <circle cx="0" cy="0" r="3" fill="#00FFAA" />
+      </g>
     </svg>
   );
 };
