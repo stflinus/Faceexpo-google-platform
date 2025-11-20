@@ -154,5 +154,12 @@ export const MockService = {
          return artist.fanCount;
      }
      return 0;
+  },
+
+  submitContestEntry: async (userId: string, category: string): Promise<boolean> => {
+    // Simulate payment processing and entry submission
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    // In a real app, this would call a payment gateway and save the entry
+    return true;
   }
 };

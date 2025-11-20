@@ -32,6 +32,7 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
         {user ? (
           <>
             <Link to="/feed" className="text-white font-bold hover:text-neon transition-colors hidden sm:block">Feed</Link>
+            <Link to="/contest" className="text-white font-bold hover:text-neon transition-colors hidden sm:block">Contest</Link>
              {user.role === 'ARTIST' && (
                 <Link to="/upload" className="bg-neon text-black px-4 py-2 rounded-full font-bold text-sm hover:scale-105 transition-transform shadow-[0_0_10px_rgba(0,255,170,0.4)]">
                   + Upload

@@ -7,6 +7,7 @@ import { Profile } from './pages/Profile';
 import { Upload } from './pages/Upload';
 import { Auth } from './pages/Auth';
 import { Settings } from './pages/Settings';
+import { Contest } from './pages/Contest';
 import { User } from './types';
 
 const App: React.FC = () => {
@@ -38,6 +39,7 @@ const App: React.FC = () => {
           <Route path="/profile/:id" element={user ? <Profile /> : <Navigate to="/auth" />} />
           <Route path="/upload" element={user ? <Upload user={user} /> : <Navigate to="/auth" />} />
           <Route path="/settings" element={user ? <Settings user={user} onUpdateUser={handleUserUpdate} /> : <Navigate to="/auth" />} />
+          <Route path="/contest" element={user ? <Contest user={user} /> : <Navigate to="/auth" />} />
           
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
