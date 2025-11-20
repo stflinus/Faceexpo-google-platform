@@ -1,6 +1,8 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Post } from '../types';
 import { Link } from 'react-router-dom';
+import { FoldingFan } from './FoldingFan';
 
 interface PostCardProps {
   post: Post;
@@ -8,8 +10,15 @@ interface PostCardProps {
 }
 
 export const PostCard: React.FC<PostCardProps> = ({ post, onBecomeFan }) => {
+  const [isFanned, setIsFanned] = useState(false);
+
+  const handleFanClick = () => {
+    setIsFanned(true);
+    onBecomeFan(post.artistId);
+  };
+
   return (
-    <div className="bg-card rounded-xl overflow-hidden mb-6 border border-gray-800 hover:border-neon/50 transition-all duration-300 shadow-lg">
+    <div className="bg-card rounded-xl overflow-hidden mb-6 border border-gray-800 hover:border-neon/50 transition-all duration-300 shadow-lg group">
       {/* Header */}
       <div className="p-4 flex items-center justify-between bg-gradient-to-r from-gray-900 to-black">
         <Link to={`/profile/${post.artistId}`} className="flex items-center gap-3">
@@ -19,11 +28,13 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onBecomeFan }) => {
             <span className="text-xs text-gray-400">{post.fanCount} Fans</span>
           </div>
         </Link>
+        
         <button 
-          onClick={() => onBecomeFan(post.artistId)}
-          className="text-neon text-xs font-bold border border-neon px-3 py-1 rounded-full hover:bg-neon hover:text-black transition-colors uppercase tracking-wider"
+          onClick={handleFanClick}
+          className={`transition-all duration-300 transform hover:scale-110 active:scale-95 p-2 rounded-full ${isFanned ? 'text-neon bg-neon/10' : 'text-gray-400 hover:text-neon hover:bg-white/5'}`}
+          title="Become a Fan"
         >
-          Become a Fan
+          <FoldingFan className="w-7 h-7" filled={isFanned} />
         </button>
       </div>
 

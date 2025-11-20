@@ -1,14 +1,17 @@
+
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { MockService } from '../services/mockService';
 import { User, Post } from '../types';
 import { Button } from '../components/Button';
+import { FoldingFan } from '../components/FoldingFan';
 
 export const Profile: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [profileUser, setProfileUser] = useState<User | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isFanned, setIsFanned] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -22,6 +25,13 @@ export const Profile: React.FC = () => {
     };
     fetchData();
   }, [id]);
+
+  const handleBecomeFan = () => {
+    if (!profileUser) return;
+    MockService.becomeFan(profileUser.id);
+    setProfileUser(prev => prev ? ({ ...prev, fanCount: prev.fanCount + 1 }) : null);
+    setIsFanned(true);
+  };
 
   if (loading) return <div className="pt-32 text-center drop-shadow-md text-xl font-bold">Loading Profile...</div>;
   if (!profileUser) return <div className="pt-32 text-center drop-shadow-md text-xl font-bold">User not found.</div>;
@@ -51,7 +61,14 @@ export const Profile: React.FC = () => {
                          <span className="block text-3xl font-bold text-white text-neon-glow">{profileUser.fanCount}</span>
                          <span className="text-xs text-gray-400 uppercase tracking-widest">Fans</span>
                     </div>
-                     <Button>Become a Fan</Button>
+                    
+                    <button 
+                        onClick={handleBecomeFan}
+                        className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all duration-300 shadow-[0_0_15px_rgba(0,255,170,0.3)] ${isFanned ? 'bg-neon text-black' : 'bg-black text-neon border border-neon hover:bg-neon hover:text-black'}`}
+                    >
+                        <FoldingFan className="w-6 h-6" filled={isFanned} />
+                        {isFanned ? 'Fanned' : 'Become a Fan'}
+                    </button>
                 </div>
             </div>
 

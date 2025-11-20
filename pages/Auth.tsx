@@ -34,19 +34,16 @@ export const Auth: React.FC<AuthProps> = ({ onLogin }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black p-4">
-      <div className="w-full max-w-md bg-card p-8 rounded-3xl border border-gray-800 shadow-[0_0_50px_rgba(0,255,170,0.1)]">
-        <div className="flex flex-col items-center justify-center mb-8 gap-2">
-          <Logo className="w-20 h-20 text-neon" />
-          <h1 className="text-3xl font-bold tracking-tighter lowercase text-white">
-            face<span className="text-neon">expo</span>
-          </h1>
+    <div className="min-h-screen flex items-center justify-center p-4 relative z-10">
+      <div className="w-full max-w-md bg-black/80 backdrop-blur-xl p-8 rounded-3xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+        <div className="flex flex-col items-center justify-center mb-8">
+          <Logo className="h-20 w-auto" />
         </div>
         
-        <h2 className="text-xl font-bold text-center mb-2 text-gray-300">
+        <h2 className="text-xl font-bold text-center mb-2 text-white">
           {isLogin ? 'Welcome Back' : 'Join the Revolution'}
         </h2>
-        <p className="text-center text-gray-500 mb-8 text-sm">
+        <p className="text-center text-gray-400 mb-8 text-sm">
           {isLogin ? 'Access your personalized feed.' : 'Start building your fanbase today.'}
         </p>
 
@@ -57,20 +54,20 @@ export const Auth: React.FC<AuthProps> = ({ onLogin }) => {
               type="text" 
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full bg-black border border-gray-700 rounded-lg p-4 text-white focus:border-neon focus:outline-none transition-colors"
+              className="w-full bg-black/50 border border-gray-700 rounded-lg p-4 text-white focus:border-neon focus:outline-none transition-colors placeholder-gray-600"
               placeholder="Enter your creative handle"
             />
           </div>
 
-          <Button type="submit" className="w-full py-4 text-lg" isLoading={loading}>
-            {isLogin ? 'Enter FaceExpo' : 'Create Account'}
+          <Button type="submit" className="w-full py-4 text-lg font-black tracking-wide shadow-lg shadow-neon/20" isLoading={loading}>
+            {isLogin ? 'ENTER' : 'CREATE ACCOUNT'}
           </Button>
         </form>
 
         <div className="mt-8 text-center">
           <button 
             onClick={() => setIsLogin(!isLogin)}
-            className="text-gray-500 hover:text-white text-sm underline decoration-gray-700 hover:decoration-white underline-offset-4 transition-all"
+            className="text-gray-400 hover:text-white text-sm underline decoration-gray-700 hover:decoration-white underline-offset-4 transition-all"
           >
             {isLogin ? "Don't have an account? Sign up" : "Already a member? Log in"}
           </button>
