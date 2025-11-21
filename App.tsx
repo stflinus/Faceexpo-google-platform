@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
@@ -8,6 +9,7 @@ import { Upload } from './pages/Upload';
 import { Auth } from './pages/Auth';
 import { Settings } from './pages/Settings';
 import { Contest } from './pages/Contest';
+import { ContestVote } from './pages/ContestVote';
 import { User } from './types';
 
 const App: React.FC = () => {
@@ -40,6 +42,7 @@ const App: React.FC = () => {
           <Route path="/upload" element={user ? <Upload user={user} /> : <Navigate to="/auth" />} />
           <Route path="/settings" element={user ? <Settings user={user} onUpdateUser={handleUserUpdate} /> : <Navigate to="/auth" />} />
           <Route path="/contest" element={user ? <Contest user={user} /> : <Navigate to="/auth" />} />
+          <Route path="/contest/vote" element={user ? <ContestVote /> : <Navigate to="/auth" />} />
           
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

@@ -1,4 +1,5 @@
-import { Post, User, UserRole, Comment } from '../types';
+
+import { Post, User, UserRole, Comment, ContestEntry } from '../types';
 
 // Mock Data
 const MOCK_USERS: User[] = [
@@ -74,6 +75,49 @@ const MOCK_POSTS: Post[] = [
     createdAt: new Date(Date.now() - 172800000).toISOString(),
     fanCount: 1250,
     comments: []
+  }
+];
+
+const MOCK_CONTEST_ENTRIES: ContestEntry[] = [
+  {
+    id: 'v1',
+    userId: '1',
+    username: 'NeonVibes',
+    userAvatar: 'https://picsum.photos/100/100?random=1',
+    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    category: 'BEST_IN_SHOW',
+    votes: 142,
+    title: 'Neon Soul Cover'
+  },
+  {
+    id: 'v2',
+    userId: '2',
+    username: 'BeatMakerPro',
+    userAvatar: 'https://picsum.photos/100/100?random=2',
+    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+    category: 'BEST_IN_SHOW',
+    votes: 89,
+    title: 'Midnight Synth Vocals'
+  },
+  {
+    id: 'v3',
+    userId: '4',
+    username: 'JokerX',
+    userAvatar: 'https://picsum.photos/100/100?random=4',
+    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    category: 'FUNNIEST_VIDEO',
+    votes: 356,
+    title: 'Bunny Disaster'
+  },
+  {
+    id: 'v4',
+    userId: '3',
+    username: 'FanBoy01',
+    userAvatar: 'https://picsum.photos/100/100?random=3',
+    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
+    category: 'FUNNIEST_VIDEO',
+    votes: 210,
+    title: 'Failed High Note'
   }
 ];
 
@@ -161,5 +205,23 @@ export const MockService = {
     await new Promise(resolve => setTimeout(resolve, 2000));
     // In a real app, this would call a payment gateway and save the entry
     return true;
+  },
+
+  getContestEntries: async (category?: string): Promise<ContestEntry[]> => {
+    await new Promise(resolve => setTimeout(resolve, 600));
+    if (category) {
+        return MOCK_CONTEST_ENTRIES.filter(e => e.category === category);
+    }
+    return [...MOCK_CONTEST_ENTRIES];
+  },
+
+  voteForEntry: async (entryId: string): Promise<number> => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    const entry = MOCK_CONTEST_ENTRIES.find(e => e.id === entryId);
+    if (entry) {
+        entry.votes += 1;
+        return entry.votes;
+    }
+    return 0;
   }
 };

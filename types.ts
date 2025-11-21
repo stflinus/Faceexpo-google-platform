@@ -1,3 +1,4 @@
+
 export enum UserRole {
   ARTIST = 'ARTIST',
   FAN = 'FAN'
@@ -34,6 +35,18 @@ export interface Post {
   createdAt: string;
   fanCount: number; // Snapshot of artist fans at time of post or specific engagement
   comments: Comment[];
+}
+
+export interface ContestEntry {
+  id: string;
+  userId: string;
+  username: string;
+  userAvatar: string;
+  videoUrl: string;
+  thumbnailUrl?: string;
+  category: 'BEST_IN_SHOW' | 'FUNNIEST_VIDEO';
+  votes: number;
+  title: string;
 }
 
 export interface AuthState {
