@@ -33,7 +33,7 @@ export const About: React.FC = () => {
           </p>
         </div>
 
-        <div className="aspect-video w-full rounded-2xl overflow-hidden border-2 border-gray-800 shadow-[0_0_30px_rgba(0,0,0,0.5)] mb-10 group hover:border-neon/50 transition-colors duration-300">
+        <div className="aspect-video w-full rounded-2xl overflow-hidden border-2 border-gray-800 shadow-[0_0_30px_rgba(0,0,0,0.5)] mb-12 group hover:border-neon/50 transition-colors duration-300">
           <iframe 
             className="w-full h-full"
             src="https://www.youtube.com/embed/a9EaAISiT5g?rel=0&playsinline=1&modestbranding=1" 
@@ -43,10 +43,15 @@ export const About: React.FC = () => {
           ></iframe>
         </div>
 
-        <div className="flex justify-center pt-4">
+        <div className="flex flex-col md:flex-row gap-4 justify-center pt-4">
             <Link to="/auth">
                 <Button className="px-12 py-4 text-lg shadow-[0_0_20px_rgba(0,255,170,0.4)] hover:scale-105 transition-transform">
                     Join the Movement
+                </Button>
+            </Link>
+             <Link to="/tips">
+                <Button variant="outline" className="px-12 py-4 text-lg hover:scale-105 transition-transform">
+                    Grow Your Fanbase
                 </Button>
             </Link>
         </div>

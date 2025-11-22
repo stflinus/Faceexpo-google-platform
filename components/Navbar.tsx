@@ -31,6 +31,7 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
 
       <div className="flex items-center gap-4">
         <Link to="/about" className="text-white font-bold text-sm hover:text-neon transition-colors">About</Link>
+        <Link to="/tips" className="text-white font-bold text-sm hover:text-neon transition-colors">Tips</Link>
 
         {user ? (
           <>

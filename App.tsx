@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { MemoryRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { MemoryRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Landing } from './pages/Landing';
 import { Feed } from './pages/Feed';
@@ -11,6 +11,7 @@ import { Settings } from './pages/Settings';
 import { Contest } from './pages/Contest';
 import { ContestVote } from './pages/ContestVote';
 import { About } from './pages/About';
+import { Tips } from './pages/Tips';
 import { User } from './types';
 
 const App: React.FC = () => {
@@ -36,6 +37,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={!user ? <Landing /> : <Navigate to="/feed" />} />
           <Route path="/about" element={<About />} />
+          <Route path="/tips" element={<Tips />} />
           <Route path="/auth" element={!user ? <Auth onLogin={handleLogin} /> : <Navigate to="/feed" />} />
           
           {/* Protected Routes */}
@@ -50,8 +52,9 @@ const App: React.FC = () => {
         </Routes>
 
         {/* Footer Bar */}
-        <footer className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800 h-12 flex items-center justify-center text-gray-500 text-xs z-50 shadow-[0_-5px_15px_rgba(0,0,0,0.5)]">
-           © 2023 FaceExpo. The Future of Fandom.
+        <footer className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800 h-12 flex items-center justify-center gap-6 text-gray-500 text-xs z-50 shadow-[0_-5px_15px_rgba(0,0,0,0.5)]">
+           <span>© 2023 FaceExpo. The Future of Fandom.</span>
+           <Link to="/tips" className="hover:text-neon transition-colors">Tips for Fans</Link>
         </footer>
       </div>
     </Router>

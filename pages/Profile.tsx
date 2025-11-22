@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { MockService } from '../services/mockService';
 import { User, Post } from '../types';
 import { Button } from '../components/Button';
@@ -67,6 +67,8 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser }) => {
   if (loading) return <div className="pt-32 text-center drop-shadow-md text-xl font-bold">Loading Profile...</div>;
   if (!profileUser) return <div className="pt-32 text-center drop-shadow-md text-xl font-bold">User not found.</div>;
 
+  const isOwnProfile = currentUser.id === profileUser.id;
+
   return (
     <div className="min-h-screen pt-20 pb-20">
         {/* Header Cover */}
@@ -93,13 +95,21 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser }) => {
                          <span className="text-xs text-gray-400 uppercase tracking-widest">Fans</span>
                     </div>
                     
-                    <button 
-                        onClick={() => handleToggleFan(profileUser.id)}
-                        className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all duration-300 shadow-[0_0_15px_rgba(0,255,170,0.3)] hover:scale-110 ${isFanned ? 'bg-neon text-black' : 'bg-black text-neon border border-neon'}`}
-                    >
-                        <FoldingFan className="w-6 h-6" filled={isFanned} />
-                        {isFanned ? 'Fanned' : 'Become a Fan'}
-                    </button>
+                    {isOwnProfile ? (
+                        <Link to="/tips">
+                            <button className="flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all duration-300 shadow-[0_0_15px_rgba(0,255,170,0.3)] hover:scale-105 bg-white text-black hover:bg-neon">
+                                🚀 Get More Fans
+                            </button>
+                        </Link>
+                    ) : (
+                        <button 
+                            onClick={() => handleToggleFan(profileUser.id)}
+                            className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all duration-300 shadow-[0_0_15px_rgba(0,255,170,0.3)] hover:scale-110 ${isFanned ? 'bg-neon text-black' : 'bg-black text-neon border border-neon'}`}
+                        >
+                            <FoldingFan className="w-6 h-6" filled={isFanned} />
+                            {isFanned ? 'Fanned' : 'Become a Fan'}
+                        </button>
+                    )}
                 </div>
             </div>
 
