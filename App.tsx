@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { MemoryRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Landing } from './pages/Landing';
 import { Feed } from './pages/Feed';
@@ -10,6 +10,7 @@ import { Auth } from './pages/Auth';
 import { Settings } from './pages/Settings';
 import { Contest } from './pages/Contest';
 import { ContestVote } from './pages/ContestVote';
+import { About } from './pages/About';
 import { User } from './types';
 
 const App: React.FC = () => {
@@ -34,6 +35,7 @@ const App: React.FC = () => {
         
         <Routes>
           <Route path="/" element={!user ? <Landing /> : <Navigate to="/feed" />} />
+          <Route path="/about" element={<About />} />
           <Route path="/auth" element={!user ? <Auth onLogin={handleLogin} /> : <Navigate to="/feed" />} />
           
           {/* Protected Routes */}

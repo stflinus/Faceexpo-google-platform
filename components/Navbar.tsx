@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Logo } from './Logo';
@@ -29,6 +30,8 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
       </div>
 
       <div className="flex items-center gap-4">
+        <Link to="/about" className="text-white font-bold text-sm hover:text-neon transition-colors">About</Link>
+
         {user ? (
           <>
             <Link to="/feed" className="text-white font-bold hover:text-neon transition-colors hidden sm:block">Feed</Link>
