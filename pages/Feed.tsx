@@ -1,9 +1,14 @@
+
 import React, { useEffect, useState } from 'react';
 import { PostCard } from '../components/PostCard';
 import { MockService } from '../services/mockService';
-import { Post } from '../types';
+import { Post, User } from '../types';
 
-export const Feed: React.FC = () => {
+interface FeedProps {
+  user: User;
+}
+
+export const Feed: React.FC<FeedProps> = ({ user }) => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -21,12 +26,23 @@ export const Feed: React.FC = () => {
     loadFeed();
   }, []);
 
-  const handleBecomeFan = async (artistId: string) => {
-      await MockService.becomeFan(artistId);
-      // Optimistic update locally for the specific artist cards in view
+  const handleToggleFan = async (artistId: string) => {
+      // Call API to toggle fan status
+      const result = await MockService.toggleFan(user.id, artistId);
+      
+      // Update local user's list of fanned artists so other components are aware
+      if (result.isFanned) {
+          if (!user.fannedArtistIds.includes(artistId)) {
+              user.fannedArtistIds.push(artistId);
+          }
+      } else {
+          user.fannedArtistIds = user.fannedArtistIds.filter(id => id !== artistId);
+      }
+      
+      // Optimistic update locally for specific artist cards in view
       setPosts(prev => prev.map(p => {
           if(p.artistId === artistId) {
-              return { ...p, fanCount: p.fanCount + 1 };
+              return { ...p, fanCount: result.newFanCount };
           }
           return p;
       }));
@@ -49,7 +65,7 @@ export const Feed: React.FC = () => {
       ) : (
         <div className="space-y-6">
           {posts.map(post => (
-            <PostCard key={post.id} post={post} onBecomeFan={handleBecomeFan} />
+            <PostCard key={post.id} post={post} currentUser={user} onToggleFan={handleToggleFan} />
           ))}
           
           <div className="text-center pt-8 pb-8">

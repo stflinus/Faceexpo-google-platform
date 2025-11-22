@@ -37,8 +37,8 @@ const App: React.FC = () => {
           <Route path="/auth" element={!user ? <Auth onLogin={handleLogin} /> : <Navigate to="/feed" />} />
           
           {/* Protected Routes */}
-          <Route path="/feed" element={user ? <Feed /> : <Navigate to="/auth" />} />
-          <Route path="/profile/:id" element={user ? <Profile /> : <Navigate to="/auth" />} />
+          <Route path="/feed" element={user ? <Feed user={user} /> : <Navigate to="/auth" />} />
+          <Route path="/profile/:id" element={user ? <Profile currentUser={user} /> : <Navigate to="/auth" />} />
           <Route path="/upload" element={user ? <Upload user={user} /> : <Navigate to="/auth" />} />
           <Route path="/settings" element={user ? <Settings user={user} onUpdateUser={handleUserUpdate} /> : <Navigate to="/auth" />} />
           <Route path="/contest" element={user ? <Contest user={user} /> : <Navigate to="/auth" />} />

@@ -11,7 +11,8 @@ const MOCK_USERS: User[] = [
     bio: 'Digital artist creating cyber-reality.',
     fanCount: 1240,
     followingCount: 5,
-    joinedDate: '2023-01-15'
+    joinedDate: '2023-01-15',
+    fannedArtistIds: []
   },
   {
     id: '2',
@@ -21,7 +22,8 @@ const MOCK_USERS: User[] = [
     bio: 'Synthwave producer. Future sounds.',
     fanCount: 8900,
     followingCount: 20,
-    joinedDate: '2023-03-10'
+    joinedDate: '2023-03-10',
+    fannedArtistIds: ['1']
   },
   {
     id: '3',
@@ -30,7 +32,8 @@ const MOCK_USERS: User[] = [
     avatarUrl: 'https://picsum.photos/100/100?random=3',
     fanCount: 0,
     followingCount: 45,
-    joinedDate: '2023-06-20'
+    joinedDate: '2023-06-20',
+    fannedArtistIds: ['1', '2']
   }
 ];
 
@@ -137,7 +140,8 @@ export const MockService = {
         fanCount: 0,
         followingCount: 0,
         joinedDate: new Date().toISOString(),
-        bio: 'New to FaceExpo!'
+        bio: 'New to FaceExpo!',
+        fannedArtistIds: []
     };
     MOCK_USERS.push(newUser);
     return newUser;
@@ -190,14 +194,33 @@ export const MockService = {
     return newPost;
   },
 
-  becomeFan: async (artistId: string): Promise<number> => {
-     // Simulate toggle fan
+  toggleFan: async (currentUserId: string, artistId: string): Promise<{ newFanCount: number, isFanned: boolean }> => {
      const artist = MOCK_USERS.find(u => u.id === artistId);
-     if (artist) {
-         artist.fanCount += 1;
-         return artist.fanCount;
+     const currentUser = MOCK_USERS.find(u => u.id === currentUserId);
+     
+     if (!artist || !currentUser) throw new Error("User not found");
+
+     const isAlreadyFanned = currentUser.fannedArtistIds.includes(artistId);
+     let newFanCount = artist.fanCount;
+
+     if (isAlreadyFanned) {
+         // Unfan
+         currentUser.fannedArtistIds = currentUser.fannedArtistIds.filter(id => id !== artistId);
+         newFanCount = Math.max(0, artist.fanCount - 1);
+         artist.fanCount = newFanCount;
+     } else {
+         // Fan
+         currentUser.fannedArtistIds.push(artistId);
+         newFanCount = artist.fanCount + 1;
+         artist.fanCount = newFanCount;
      }
-     return 0;
+
+     // Update posts by this artist to reflect new count
+     MOCK_POSTS.forEach(p => {
+         if (p.artistId === artistId) p.fanCount = newFanCount;
+     });
+
+     return { newFanCount, isFanned: !isAlreadyFanned };
   },
 
   submitContestEntry: async (userId: string, category: string): Promise<boolean> => {

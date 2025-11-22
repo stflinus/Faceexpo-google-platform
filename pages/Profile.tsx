@@ -5,8 +5,13 @@ import { MockService } from '../services/mockService';
 import { User, Post } from '../types';
 import { Button } from '../components/Button';
 import { FoldingFan } from '../components/FoldingFan';
+import { PostCard } from '../components/PostCard';
 
-export const Profile: React.FC = () => {
+interface ProfileProps {
+  currentUser: User;
+}
+
+export const Profile: React.FC<ProfileProps> = ({ currentUser }) => {
   const { id } = useParams<{ id: string }>();
   const [profileUser, setProfileUser] = useState<User | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
@@ -19,18 +24,44 @@ export const Profile: React.FC = () => {
       setLoading(true);
       const user = await MockService.getUser(id);
       const userPosts = await MockService.getArtistPosts(id);
-      if (user) setProfileUser(user);
+      if (user) {
+          setProfileUser(user);
+          // Check if current user is already a fan of this profile
+          setIsFanned(currentUser.fannedArtistIds.includes(user.id));
+      }
       setPosts(userPosts);
       setLoading(false);
     };
     fetchData();
-  }, [id]);
+  }, [id, currentUser.fannedArtistIds]);
 
-  const handleBecomeFan = () => {
-    if (!profileUser) return;
-    MockService.becomeFan(profileUser.id);
-    setProfileUser(prev => prev ? ({ ...prev, fanCount: prev.fanCount + 1 }) : null);
-    setIsFanned(true);
+  const handleToggleFan = async (artistId: string = profileUser?.id || '') => {
+    if (!profileUser || !artistId) return;
+
+    const result = await MockService.toggleFan(currentUser.id, artistId);
+    
+    // Update local user state
+    if (result.isFanned) {
+        if (!currentUser.fannedArtistIds.includes(artistId)) {
+            currentUser.fannedArtistIds.push(artistId);
+        }
+    } else {
+        currentUser.fannedArtistIds = currentUser.fannedArtistIds.filter(id => id !== artistId);
+    }
+
+    // Update Profile UI
+    if (artistId === profileUser.id) {
+        setProfileUser(prev => prev ? ({ ...prev, fanCount: result.newFanCount }) : null);
+        setIsFanned(result.isFanned);
+    }
+
+    // Update posts in the feed below
+    setPosts(prev => prev.map(p => {
+        if(p.artistId === artistId) {
+            return { ...p, fanCount: result.newFanCount };
+        }
+        return p;
+    }));
   };
 
   if (loading) return <div className="pt-32 text-center drop-shadow-md text-xl font-bold">Loading Profile...</div>;
@@ -63,7 +94,7 @@ export const Profile: React.FC = () => {
                     </div>
                     
                     <button 
-                        onClick={handleBecomeFan}
+                        onClick={() => handleToggleFan(profileUser.id)}
                         className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all duration-300 shadow-[0_0_15px_rgba(0,255,170,0.3)] hover:scale-110 ${isFanned ? 'bg-neon text-black' : 'bg-black text-neon border border-neon'}`}
                     >
                         <FoldingFan className="w-6 h-6" filled={isFanned} />
@@ -82,15 +113,9 @@ export const Profile: React.FC = () => {
                         No uploads yet.
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         {posts.map(post => (
-                            <div key={post.id} className="aspect-square bg-gray-900 rounded-xl overflow-hidden relative group cursor-pointer shadow-lg border border-white/5 hover:border-neon/50 transition-all">
-                                <img src={post.mediaUrl} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                                <div className="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4 text-center">
-                                    <h3 className="font-bold text-white text-lg mb-2">{post.title}</h3>
-                                    <span className="text-neon text-sm border border-neon px-3 py-1 rounded-full">{post.fanCount} Fans</span>
-                                </div>
-                            </div>
+                            <PostCard key={post.id} post={post} currentUser={currentUser} onToggleFan={handleToggleFan} />
                         ))}
                     </div>
                 )}

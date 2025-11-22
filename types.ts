@@ -13,6 +13,7 @@ export interface User {
   fanCount: number;
   followingCount: number;
   joinedDate: string;
+  fannedArtistIds: string[]; // List of artist IDs this user is a fan of
 }
 
 export interface Comment {
